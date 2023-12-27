@@ -8,6 +8,7 @@
 #include <sys/time.h>   // get_time_of_day
 #include <limits.h>     // INT_MAX
 
+
 typedef pthread_mutex_t t_mtx;
 typedef struct s_table t_table;
 
@@ -43,6 +44,20 @@ typedef	struct s_table
 	t_fork	*forks;		//arr of forks
 	t_philo	*philos;	//arr of philos
 } t_table;
+
+typedef enum e_opcode
+{
+	LOCK,
+	UNLOCK,
+	INIT,
+	DESTROY,
+	CREATE,
+	JOIN,
+	DETEACH,
+}		t_opcode;
+
+void    error_exit(char *error);
+void    safe_malloc(size_t bytes);
 
 
 #endif

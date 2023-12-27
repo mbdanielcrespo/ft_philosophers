@@ -1,6 +1,6 @@
 CC = CC
 CFLAGS = -Wall -Werror -Wextra -g3 # -fsanitize=address
-NAME = philosophers
+NAME = philo
 INC_FLAGS = -I ./inc/
 
 SRC = src/main.c
