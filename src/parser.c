@@ -76,6 +76,8 @@ void    parse_input(t_table *table, char **av)
 		|| table->time_to_eat < 6e4
 		|| table->time_to_sleep < 6e4)
 		error_exit("Use timestamps > 60ms");
-	else
+	if (av[5])
 		table->meals_limit = ft_atol(av[5]);
+	else
+		table->meals_limit = -1;
 }

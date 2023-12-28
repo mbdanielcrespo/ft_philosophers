@@ -26,14 +26,14 @@ int main(int ac, char **av)
 
     if (ac == 5 || ac == 6)
     {
-
+        parse_input(&table, av);
+        data_init(&table);
     }
-    //parse input
-    //data init
     //diner start
     //clean
     else
     {
         error_exit("Wrong input!");
     }
+    return (0);
 }

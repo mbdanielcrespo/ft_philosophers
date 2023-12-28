@@ -18,7 +18,7 @@ void    error_exit(char *error)
 	exit(EXIT_FAILURE);
 }
 
-void    safe_malloc(size_t bytes)
+void    *safe_malloc(size_t bytes)
 {
 	void    *ret;
 	
@@ -41,21 +41,21 @@ void	handle_mutex_error(int stat, t_opcode opcode)
 	else if (EPERM == stat)
 		error_exit("Current thread does not have a lock/mutex");
 	else if (ENOMEM == stat)
-		error_exit("The process cannot allocate enough memory")
+		error_exit("The process cannot allocate enough memory");
 	else if (EBUSY == stat)
-		error_exit()
+		error_exit("Mutex is locked");
 }
 
 void    safe_mutex_handle(t_mtx *mutex, t_opcode opcode)
 {
 	if (LOCK == opcode)
-		pthread_mutex_lock(mutex);
+		handle_mutex_error(pthread_mutex_lock(mutex), opcode);
 	else if (UNLOCK == opcode)
-		pthread_mutex_unlock(mutex);
+		handle_mutex_error(pthread_mutex_unlock(mutex), opcode);
 	else if (INIT == opcode)
-		pthread_mutex_init(mutex, NULL);
+		handle_mutex_error(pthread_mutex_init(mutex, NULL), opcode);
 	else if (DESTROY == opcode)
-		pthread_mutex_destroy(mutex);
+		handle_mutex_error(pthread_mutex_destroy(mutex), opcode);
 	else
 		error_exit("Wrong opcode for mutex handle");
 }
