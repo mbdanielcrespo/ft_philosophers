@@ -5,25 +5,39 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/27 12:51:07 by danalmei          #+#    #+#             */
-/*   Updated: 2023/12/27 15:30:05 by danalmei         ###   ########.fr       */
+/*   Created: 2024/01/15 11:41:58 by danalmei          #+#    #+#             */
+/*   Updated: 2024/01/15 15:34:05 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include <philo.h>
 
-void    error_exit(char *error)
+int is_digit(char ch)
 {
-	printf("ERROR: %s\n", error);
-	exit(EXIT_FAILURE);
+	if (ch >= '0' && ch <= '9')
+		return (1);
+	return (0);
 }
 
-void    safe_malloc(size_t bytes)
+int is_space(char ch)
 {
-	void    *ret;
-	
+	if ((ch >= 9 && ch <= 13) || ch == 32)
+		return (1);
+	return (0);
+}
+
+void	error_exit(char *error)
+{
+	printf("%s\n", error);
+	exit(1);
+}
+
+void	*safe_malloc(size_t bytes)
+{
+	void	*ret;
+
 	ret = malloc(bytes);
-	if (NULL == ret)
+	if (!ret)
 		error_exit("Malloc error");
 	return (ret);
 }
@@ -41,21 +55,21 @@ void	handle_mutex_error(int stat, t_opcode opcode)
 	else if (EPERM == stat)
 		error_exit("Current thread does not have a lock/mutex");
 	else if (ENOMEM == stat)
-		error_exit("The process cannot allocate enough memory")
+		error_exit("The process cannot allocate enough memory");
 	else if (EBUSY == stat)
-		error_exit()
+		error_exit("Thread is busy !!!!!************");
 }
 
 void    safe_mutex_handle(t_mtx *mutex, t_opcode opcode)
 {
 	if (LOCK == opcode)
-		pthread_mutex_lock(mutex);
+		handle_mutex_error(pthread_mutex_lock(mutex), opcode);
 	else if (UNLOCK == opcode)
-		pthread_mutex_unlock(mutex);
+		handle_mutex_error(pthread_mutex_unlock(mutex), opcode);
 	else if (INIT == opcode)
-		pthread_mutex_init(mutex, NULL);
+		handle_mutex_error(pthread_mutex_init(mutex, NULL), opcode);
 	else if (DESTROY == opcode)
-		pthread_mutex_destroy(mutex);
+		handle_mutex_error(pthread_mutex_destroy(mutex), opcode);
 	else
 		error_exit("Wrong opcode for mutex handle");
 }
