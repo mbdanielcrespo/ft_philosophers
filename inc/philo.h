@@ -1,18 +1,18 @@
 #ifndef PHILO_H
 #define PHILO_H
 
-#include <unistd.h>     // write usleep
-#include <stdlib.h>     // malloc free
-#include <stdio.h>      // printf
-#include <pthread.h>    // mutex, threads
-#include <sys/time.h>   // get_time_of_day
-#include <limits.h>     // INT_MAX
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <pthread.h>
+#include <sys/time.h>
+#include <limits.h>
 #include <errno.h>
 
 typedef pthread_mutex_t t_mtx;
 typedef struct s_table t_table;
 
-//number_of_philosophers time_to_die time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]
+//number_of_philosophers die eat sleep
 // 5 200 200 200 [5]
 typedef struct s_fork
 {
@@ -57,8 +57,9 @@ typedef enum e_opcode
 typedef	enum e_status
 {
 	THINKING = 1,
-	EATING = 2,
-	SLEEPING = 3,
+	HUNGRY = 2,
+	EATING = 3,
+	SLEEPING = 4,
 }		t_status;
 
 // Utils
@@ -87,5 +88,11 @@ void *philosopher_routine(void *arg);
 void    init_table(t_table *table, char **av);
 void	init_philos(t_table *table);
 void	init_forks(t_table *table);
+void	init_philos_threads(t_table *table);
+
+// Time
+long long	current_time_ms(void);
+long long	elapsed_time_ms(long long start_time);
+void		custom_sleep_ms(int ms);
 
 #endif

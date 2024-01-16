@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 13:07:40 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/15 15:43:04 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/16 14:24:31 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,22 @@ void    print_table(t_table *table)
     printf("End: %d\n", table->end);
 }
 
+char    *get_status(int status)
+{
+    if (status == 1)
+        return ("thinking");
+    else if (status == 2)
+        return ("eating");
+    else if (status == 3)
+        return ("sleeping");
+    else
+        return ("unknow");
+}
+
 void    print_philo(t_philo *philo)
 {
     printf("Philo id: %d\n", philo->id);
-    printf("Status: %d\n", philo->status);
+    printf("Status: %s\n", get_status(philo->status));
     printf("Is dead: %d\n", philo->is_dead);
 }
 

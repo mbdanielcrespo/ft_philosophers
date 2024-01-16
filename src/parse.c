@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:32:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/15 15:42:17 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/16 11:45:08 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	parse_input(t_table *table, char **av)
 	if (table->time_to_die < 6e4 || table->time_to_eat < 6e4
 		|| table->time_to_sleep < 6e4)
 		error_exit("Use timestamps > 60ms");
-	if (av[4])
+	if (av[5])
 		table->max_meals = ft_atol(av[5]);
 	else
 		table->max_meals = -1;
