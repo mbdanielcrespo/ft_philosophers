@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Werror -Wextra -g # -fsanitize=threads
+CFLAGS = -Wall -Werror -Wextra -g -fsanitize=thread
 NAME = philo
 INC_FLAGS = -I ./inc/
 

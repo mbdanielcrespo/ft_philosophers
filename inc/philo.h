@@ -23,7 +23,8 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int		id;
-	int		status;		//
+	int		status;
+	long long	last_meal;
 	int		is_dead;
 	t_fork	*left_fork;
 	t_fork	*right_fork;
@@ -39,6 +40,7 @@ typedef	struct s_table
 	int		time_to_sleep;
 	int		max_meals;		//-1 uninitialized
 	int		end;
+	long long	dinner_start;
 	t_philo	*philos;
 	t_fork	*forks;
 }	t_table;
@@ -82,7 +84,11 @@ void    print_philo(t_philo *philo);
 void    print_fork(t_fork *fork);
 
 // Dinner
-void *philosopher_routine(void *arg);
+int has_died(t_philo *philo, char *debug);
+int		philo_think(t_philo *philo);
+int		philo_eat(t_philo *philo);
+int		philo_sleep(t_philo *philo);
+void	*philosopher_routine(void *arg);
 
 // Init
 void    init_table(t_table *table, char **av);

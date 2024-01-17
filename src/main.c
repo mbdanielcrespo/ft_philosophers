@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:33:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/16 14:58:31 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/17 16:01:01 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@
 int main(int ac, char **av)
 {
 	t_table *table;
-	long long	curr_time;
-	
-	printf("Program started ...\n");
-	curr_time = current_time_ms();
+
 	if (ac >= 4)
 	{
 		table = (t_table *)safe_malloc(sizeof(t_table));
@@ -32,6 +29,6 @@ int main(int ac, char **av)
 	}
 	else
 		error_exit("Invalid number of arguments!\n");
-	printf("Program finished ... elapsed time: %lldms\n", elapsed_time_ms(curr_time));
+	printf("Program finished but threads keep runing ... \n");
 	return (0);
 }

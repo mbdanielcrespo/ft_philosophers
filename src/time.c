@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 12:04:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/16 15:01:04 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/17 15:43:16 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ long long	current_time_ms(void)
 	struct timeval tv;
 	
 	gettimeofday(&tv, NULL);
-	return ((tv.tv_sec * 100LL) + (tv.tv_usec / 1000));
+	return ((tv.tv_sec * 1000LL) + (tv.tv_usec / 1000));
 }
 
 long long	elapsed_time_ms(long long start_time)
