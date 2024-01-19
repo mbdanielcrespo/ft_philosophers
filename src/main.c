@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:33:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/17 16:01:01 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:50:58 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,27 @@ int main(int ac, char **av)
 
 	if (ac >= 4)
 	{
-		table = (t_table *)safe_malloc(sizeof(t_table));
-		init_table(table, av);		// Parse input and allocate variables
-		print_all(table);			// Debug print
-		init_philos_threads(table);
-		// Simulation
-		// Cleanup
+		table = (t_table *)malloc(sizeof(t_table));
+		if (!table)
+		{
+			printf("Malloc error!\n");
+			return (1);	
+		}
+		if (!init_table(table, av))
+		{
+			// Cleanup
+			return (1);
+		}
+		if (!init_philos_threads(table))
+		{
+			// Cleanup
+			return (1);	
+		}
 	}
 	else
-		error_exit("Invalid number of arguments!\n");
-	printf("Program finished but threads keep runing ... \n");
+	{
+		printf("Invalid number of arguments!\n");
+		return (1);
+	}
 	return (0);
 }

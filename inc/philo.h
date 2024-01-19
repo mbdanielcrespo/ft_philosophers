@@ -67,15 +67,13 @@ typedef	enum e_status
 // Utils
 int		is_digit(char ch);
 int		is_space(char ch);
-void    error_exit(char *error);
 void    *safe_malloc(size_t bytes);
-void	handle_mutex_error(int stat, t_opcode opcode);
-void    safe_mutex_handle(t_mtx *mutex, t_opcode opcode);
+void    mutex_handle(t_mtx *mutex, t_opcode opcode);
 
 // Parse
 char	*valid_input(char *str);
 int		ft_atol(char *str);
-void	parse_input(t_table *table, char **av);
+int		parse_input(t_table *table, char **av);
 
 // Debug
 void    print_all(t_table *table);
@@ -84,21 +82,27 @@ void    print_philo(t_philo *philo);
 void    print_fork(t_fork *fork);
 
 // Dinner
-int has_died(t_philo *philo, char *debug);
+int		has_died(t_philo *philo);
 int		philo_think(t_philo *philo);
 int		philo_eat(t_philo *philo);
 int		philo_sleep(t_philo *philo);
 void	*philosopher_routine(void *arg);
 
 // Init
-void    init_table(t_table *table, char **av);
+int		init_table(t_table *table, char **av);
 void	init_philos(t_table *table);
 void	init_forks(t_table *table);
-void	init_philos_threads(t_table *table);
+int		init_philos_threads(t_table *table);
 
 // Time
 long long	current_time_ms(void);
 long long	elapsed_time_ms(long long start_time);
-void		custom_sleep_ms(int ms);
+void		custom_wait(t_philo *philo, int wait_ms);
+
+// Cleanup
+void    join_philos_threads(t_table *table);
+void    destroy_mutexes(t_table *table);
+void    destroy_structures(t_table *table);
+void    end_simulation(t_table *table);
 
 #endif

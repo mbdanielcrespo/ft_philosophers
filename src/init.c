@@ -6,23 +6,27 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/17 14:57:05 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:48:23 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-void    init_table(t_table *table, char **av)
+int    init_table(t_table *table, char **av)
 {
-	parse_input(table, av);
+	if (!parse_input(table, av))
+		return (0);
 	table->end = 0;
 	table->dinner_start = current_time_ms();
-	table->philos = (t_philo *)safe_malloc(sizeof(t_philo) *
-										table->num_of_philos);
-	table->forks = (t_fork *)safe_malloc(sizeof(t_fork) *
-										table->num_of_philos);
+	table->philos = (t_philo *)malloc(sizeof(t_philo) * table->num_of_philos);
+	if (!table->philos)
+		return (0);
+	table->forks = (t_fork *)malloc(sizeof(t_fork) * table->num_of_philos);
+	if (!table->forks)
+		return (0);
 	init_forks(table);
 	init_philos(table);
+	return (1);
 }
 
 void	init_forks(t_table *table)
@@ -32,7 +36,7 @@ void	init_forks(t_table *table)
 	c = 0;
 	while (c < table->num_of_philos)
 	{
-		safe_mutex_handle(&table->forks[c].mtx, INIT);
+		mutex_handle(&table->forks[c].mtx, INIT);
 		table->forks[c].id = c;
 		c++;
 	}
@@ -45,7 +49,7 @@ void	init_philos(t_table *table)
 	c = 0;
 	while (c < table->num_of_philos)
 	{
-		table->philos[c].id = c;
+		table->philos[c].id = c + 1;
 		table->philos[c].status = THINKING;
 		table->philos[c].last_meal = current_time_ms();
 		table->philos[c].is_dead = 0;
@@ -56,7 +60,7 @@ void	init_philos(t_table *table)
 	}
 }
 
-void	init_philos_threads(t_table *table)
+int	init_philos_threads(t_table *table)
 {
 	int	c;
 
@@ -64,8 +68,11 @@ void	init_philos_threads(t_table *table)
 	while (c < table->num_of_philos)
 	{
 		if (pthread_create(&table->philos[c].philo, NULL, philosopher_routine, (void *)&table->philos[c]) != 0)
-			error_exit("Error creating thread");
+		{
+			printf("Error creating thread!\n");
+			return (0);
+		}
 		c++;
 	}
+	return (1);
 }
-

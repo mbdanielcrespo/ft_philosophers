@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 12:04:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/17 15:43:16 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/19 14:40:06 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,18 @@ long long	elapsed_time_ms(long long start_time)
 	return (end_time - start_time);
 }
 
-void	custom_sleep_ms(int ms)
+void	custom_wait(t_philo *philo, int wait_ms)
 {
 	long long start_time;
-	long long end_time;
 
 	start_time = current_time_ms();
-	end_time = start_time + ms;
-	while (current_time_ms() < end_time)
-		usleep(1000);
+	while (elapsed_time_ms(start_time) < wait_ms)
+	{
+		if (has_died(philo))
+		{
+			/************************/
+		}
+	}
 }
 
 // Confirmar se alguem morreu durante o custom sleep
