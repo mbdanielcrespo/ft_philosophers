@@ -23,7 +23,6 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	int		id;
-	int		status;
 	long long	last_meal;
 	int		is_dead;
 	t_fork	*left_fork;
@@ -43,7 +42,9 @@ typedef	struct s_table
 	long long	dinner_start;
 	t_philo	*philos;
 	t_fork	*forks;
+	t_mtx	mtx;
 }	t_table;
+
 
 typedef enum e_opcode
 {
@@ -56,18 +57,11 @@ typedef enum e_opcode
 	DETEACH = 6,
 }		t_opcode;
 
-typedef	enum e_status
-{
-	THINKING = 1,
-	HUNGRY = 2,
-	EATING = 3,
-	SLEEPING = 4,
-}		t_status;
-
 // Utils
 int		is_digit(char ch);
 int		is_space(char ch);
-void    *safe_malloc(size_t bytes);
+//void	*safe_malloc(size_t bytes);
+//void	error_exit(char *error)
 void    mutex_handle(t_mtx *mutex, t_opcode opcode);
 
 // Parse
@@ -82,9 +76,10 @@ void    print_philo(t_philo *philo);
 void    print_fork(t_fork *fork);
 
 // Dinner
-int		has_died(t_philo *philo);
-int		philo_think(t_philo *philo);
+int		even_philo_eat(t_philo *philo);
+int		uneven_philo_eat(t_philo *philo);
 int		philo_eat(t_philo *philo);
+int		philo_think(t_philo *philo);
 int		philo_sleep(t_philo *philo);
 void	*philosopher_routine(void *arg);
 
@@ -92,12 +87,12 @@ void	*philosopher_routine(void *arg);
 int		init_table(t_table *table, char **av);
 void	init_philos(t_table *table);
 void	init_forks(t_table *table);
-int		init_philos_threads(t_table *table);
+int		init_threads(t_table *table);
 
 // Time
 long long	current_time_ms(void);
 long long	elapsed_time_ms(long long start_time);
-void		custom_wait(t_philo *philo, int wait_ms);
+void		custom_wait(int wait_ms);
 
 // Cleanup
 void    join_philos_threads(t_table *table);
@@ -105,4 +100,9 @@ void    destroy_mutexes(t_table *table);
 void    destroy_structures(t_table *table);
 void    end_simulation(t_table *table);
 
+
+// Monitor
+
+int		has_died(t_philo *philo);
+void	*monitor_routine(void *arg);
 #endif

@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/19 14:48:23 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/24 00:02:48 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int    init_table(t_table *table, char **av)
 		return (0);
 	table->end = 0;
 	table->dinner_start = current_time_ms();
+	mutex_handle(&table->mtx, INIT);
 	table->philos = (t_philo *)malloc(sizeof(t_philo) * table->num_of_philos);
 	if (!table->philos)
 		return (0);
@@ -29,6 +30,7 @@ int    init_table(t_table *table, char **av)
 	return (1);
 }
 
+// In case mutex fails error
 void	init_forks(t_table *table)
 {
 	int	c;
@@ -50,7 +52,6 @@ void	init_philos(t_table *table)
 	while (c < table->num_of_philos)
 	{
 		table->philos[c].id = c + 1;
-		table->philos[c].status = THINKING;
 		table->philos[c].last_meal = current_time_ms();
 		table->philos[c].is_dead = 0;
 		table->philos[c].left_fork = &table->forks[c];
@@ -60,16 +61,22 @@ void	init_philos(t_table *table)
 	}
 }
 
-int	init_philos_threads(t_table *table)
+int	init_threads(t_table *table)
 {
 	int	c;
-
+	pthread_t monitor_thread;
+	
 	c = 0;
+	if (pthread_create(&monitor_thread, NULL, monitor_routine, (void*)&table) != 0)
+	{
+		printf("Error creating monitor thread!\n");
+	    return (0);
+	}
 	while (c < table->num_of_philos)
 	{
 		if (pthread_create(&table->philos[c].philo, NULL, philosopher_routine, (void *)&table->philos[c]) != 0)
 		{
-			printf("Error creating thread!\n");
+			printf("Error creating philo thread!\n");
 			return (0);
 		}
 		c++;

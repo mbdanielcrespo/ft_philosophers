@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:33:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/19 14:50:58 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/24 00:03:32 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int main(int ac, char **av)
 			// Cleanup
 			return (1);
 		}
-		if (!init_philos_threads(table))
+		if (!init_threads(table))
 		{
 			// Cleanup
 			return (1);	

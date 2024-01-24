@@ -6,30 +6,22 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:17:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/19 15:00:08 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/24 00:18:54 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-/*
-void	monitor(t_table *table)
-{
-	pthread_t monitor_thread;
-
-	if (pthread_create(monitor_thread, NULL, philosopher_routine, (void *)&table) != 0)
-		error_exit("Error creating thread");
-	
-}*/
-
 int	even_philo_eat(t_philo *philo)
 {
+	if (has_died(philo))
+		return (0);
 	mutex_handle(&philo->right_fork->mtx, LOCK);
 	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
 	mutex_handle(&philo->left_fork->mtx, LOCK);
 	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
 	printf("%lld %d is eating\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	custom_wait(philo, philo->table->time_to_eat);
+	custom_wait(philo->table->time_to_eat);
 	philo->last_meal = current_time_ms();
 	mutex_handle(&philo->right_fork->mtx, UNLOCK);
 	mutex_handle(&philo->left_fork->mtx, UNLOCK);
@@ -38,12 +30,14 @@ int	even_philo_eat(t_philo *philo)
 
 int	uneven_philo_eat(t_philo *philo)
 {
+	if (has_died(philo))
+		return (0);
 	mutex_handle(&philo->left_fork->mtx, LOCK);
 	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
 	mutex_handle(&philo->right_fork->mtx, LOCK);
 	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
 	printf("%lld %d is eating\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	custom_wait(philo, philo->table->time_to_eat);
+	custom_wait(philo->table->time_to_eat);
 	philo->last_meal = current_time_ms();
 	mutex_handle(&philo->left_fork->mtx, UNLOCK);
 	mutex_handle(&philo->right_fork->mtx, UNLOCK);
@@ -67,26 +61,20 @@ int	philo_eat(t_philo *philo)
 
 int	philo_think(t_philo *philo)
 {
+	if (has_died(philo))
+		return (0);
 	printf("%lld %d is thinking\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	custom_wait(philo, 100);
+	custom_wait(1);
 	return (1);
 }
 
 int	philo_sleep(t_philo *philo)
 {
+	if (has_died(philo))
+		return (0);
 	printf("%lld %d is sleeping\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	custom_wait(philo, philo->table->time_to_sleep);
+	custom_wait(philo->table->time_to_sleep);
 	return (1);
-}
-
-int has_died(t_philo *philo)
-{
-	if (elapsed_time_ms(philo->last_meal) >= philo->table->time_to_die)
-	{
-		printf("%lld %d died\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-		return (1);
-	}
-	return (0);
 }
 
 void	*philosopher_routine(void *arg)
@@ -95,7 +83,7 @@ void	*philosopher_routine(void *arg)
 	
 	if ((philo->id % 2) == 0)
 		usleep(100);
-	while (!philo->table->end)
+	while (1)
 	{
 		if (!philo_think(philo))
 			break;

@@ -4,7 +4,7 @@ NAME = philo
 INC_FLAGS = -I ./inc/
 
 SRC = 	src/main.c src/dinner.c src/init.c src/parse.c \
-		src/debug.c src/utils.c src/time.c src/cleanup.c
+		src/debug.c src/utils.c src/time.c src/cleanup.c src/monitor.c
 
 $(NAME) : $(SRC)
 	$(CC) $(CFLAGS) $(INC_FLAGS) $(SRC) -o $(NAME)
