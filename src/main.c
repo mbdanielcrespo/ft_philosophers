@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:33:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 00:03:32 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/24 23:01:54 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ int main(int ac, char **av)
 		}
 		if (!init_table(table, av))
 		{
-			// Cleanup
+			end_simulation(table);
 			return (1);
 		}
 		if (!init_threads(table))
 		{
-			// Cleanup
-			return (1);	
+			end_simulation(table);
+			return (1);
 		}
 	}
 	else
@@ -42,5 +42,6 @@ int main(int ac, char **av)
 		printf("Invalid number of arguments!\n");
 		return (1);
 	}
+	printf("Main function finished ...\n");
 	return (0);
 }

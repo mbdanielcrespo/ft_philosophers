@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 00:02:48 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/01/24 22:29:24 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,9 @@ void	init_philos(t_table *table)
 int	init_threads(t_table *table)
 {
 	int	c;
-	pthread_t monitor_thread;
 	
 	c = 0;
-	if (pthread_create(&monitor_thread, NULL, monitor_routine, (void*)&table) != 0)
+	if (pthread_create(&table->monitor_thread, NULL, monitor_routine, (void *)&table) != 0)
 	{
 		printf("Error creating monitor thread!\n");
 	    return (0);

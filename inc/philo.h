@@ -40,6 +40,7 @@ typedef	struct s_table
 	int		max_meals;		//-1 uninitialized
 	int		end;
 	long long	dinner_start;
+	pthread_t	monitor_thread;
 	t_philo	*philos;
 	t_fork	*forks;
 	t_mtx	mtx;
@@ -95,14 +96,14 @@ long long	elapsed_time_ms(long long start_time);
 void		custom_wait(int wait_ms);
 
 // Cleanup
-void    join_philos_threads(t_table *table);
+void    join_threads(t_table *table);
 void    destroy_mutexes(t_table *table);
 void    destroy_structures(t_table *table);
 void    end_simulation(t_table *table);
 
 
 // Monitor
-
 int		has_died(t_philo *philo);
+int		has_someone_died(t_philo *philo);
 void	*monitor_routine(void *arg);
 #endif
