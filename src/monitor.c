@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 23:33:29 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 23:14:30 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:57:52 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,10 @@ int has_died(t_philo *philo)
 	if (elapsed_time_ms(philo->last_meal) >= philo->table->time_to_die)
 	{
 		mutex_handle(&philo->table->mtx, LOCK);
+		if (has_someone_died(philo))
+			return (1);
 		philo->is_dead = 1;
-		printf("%lld %d died\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+		printf("%lld %d DIED\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
 		mutex_handle(&philo->table->mtx, UNLOCK);
 		return (1);
 	}
@@ -40,29 +42,25 @@ void*   monitor_routine(void *arg)
 {
 	t_table *table;
 	int     c;
-	int		found;
 
 	table = *(t_table**) arg;
 	while (!table->end)
 	{
 		c = 0;
-		found = 0;
 		mutex_handle(&table->mtx, LOCK);
 		while (c < table->num_of_philos)
 		{
 			if (table->philos[c].is_dead)
 			{
 				table->end = 1;
-				printf("someone did die!\n");
-				found = 1;
 				break;
 			}
 			c++;
 		}
 		mutex_handle(&table->mtx, UNLOCK);
-		if (found)
+		if (table->end)
 			break;
-		usleep(100);
+		usleep(10);
 	}
 	return (NULL);
 }

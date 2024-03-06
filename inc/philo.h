@@ -61,12 +61,10 @@ typedef enum e_opcode
 // Utils
 int		is_digit(char ch);
 int		is_space(char ch);
-//void	*safe_malloc(size_t bytes);
-//void	error_exit(char *error)
 void    mutex_handle(t_mtx *mutex, t_opcode opcode);
 
 // Parse
-char	*valid_input(char *str);
+int		valid_input(char *str);
 int		ft_atol(char *str);
 int		parse_input(t_table *table, char **av);
 
@@ -85,7 +83,7 @@ int		philo_sleep(t_philo *philo);
 void	*philosopher_routine(void *arg);
 
 // Init
-int		init_table(t_table *table, char **av);
+int		init_table(t_table *table);
 void	init_philos(t_table *table);
 void	init_forks(t_table *table);
 int		init_threads(t_table *table);
@@ -93,14 +91,13 @@ int		init_threads(t_table *table);
 // Time
 long long	current_time_ms(void);
 long long	elapsed_time_ms(long long start_time);
-void		custom_wait(int wait_ms);
+int			custom_wait(int wait_ms, t_philo *philo);
 
 // Cleanup
 void    join_threads(t_table *table);
 void    destroy_mutexes(t_table *table);
 void    destroy_structures(t_table *table);
 void    end_simulation(t_table *table);
-
 
 // Monitor
 int		has_died(t_philo *philo);

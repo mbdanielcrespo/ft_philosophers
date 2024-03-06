@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:41:58 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/19 14:49:02 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/05 00:24:17 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	*safe_malloc(size_t bytes)
 }
 */
 
-void    mutex_handle(t_mtx *mutex, t_opcode opcode)
+void	mutex_handle(t_mtx *mutex, t_opcode opcode)
 {
 	if (LOCK == opcode)
 		pthread_mutex_lock(mutex);

@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 12:04:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 23:11:31 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/04 19:09:41 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,18 @@ long long	elapsed_time_ms(long long start_time)
 	return (end_time - start_time);
 }
 
-void	custom_wait(int wait_ms)
+int	custom_wait(int wait_ms, t_philo *philo)
 {
 	long long start_time;
 
 	start_time = current_time_ms();
 	while (elapsed_time_ms(start_time) < wait_ms)
-		usleep(150);
+	{
+		if (has_someone_died(philo))
+			return (1);
+		if (has_died(philo))
+			return (1);
+		usleep(50);
+	}
+	return (0);
 }

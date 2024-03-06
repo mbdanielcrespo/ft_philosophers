@@ -6,16 +6,14 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 22:29:24 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/04 18:43:30 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-int    init_table(t_table *table, char **av)
+int    init_table(t_table *table)
 {
-	if (!parse_input(table, av))
-		return (0);
 	table->end = 0;
 	table->dinner_start = current_time_ms();
 	mutex_handle(&table->mtx, INIT);

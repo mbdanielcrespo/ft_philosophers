@@ -6,21 +6,23 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:11:57 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 23:08:52 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/05 10:54:14 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-void    join_threads(t_table *table)
+void	join_threads(t_table *table)
 {
 	int c;
 
 	c = 0;
-	pthread_join(table->monitor_thread, NULL);
+	if (pthread_join(table->monitor_thread, NULL) < 0)
+		printf("Thread join error\n");
 	while (c < table->num_of_philos)
 	{
-		pthread_join(table->philos[c].philo, NULL);
+		if (pthread_join(table->philos[c].philo, NULL) < 0)
+			printf("Thread join error\n");
 		c++;
 	}
 }
@@ -38,16 +40,15 @@ void    destroy_mutexes(t_table *table)
 	}
 }
 
-void    destroy_structures(t_table *table)
+void	destroy_structures(t_table *table)
 {
 	free(table->philos);
 	free(table->forks);
 }
 
-void    end_simulation(t_table *table)
+void	end_simulation(t_table *table)
 {
 	join_threads(table);
-	printf("SIMULATION FINISHED CLEANUP!\n");
 	destroy_mutexes(table);
 	destroy_structures(table);
 }

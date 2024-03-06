@@ -6,61 +6,57 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:32:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/19 14:41:57 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/04 17:07:52 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <philo.h>
 
-char	*valid_input(char *str)
+int	is_valid_input(char *str)
 {
 	int c;
-	char *num;
 
 	c = 0;
-	num = NULL;
+	while (is_space(str[c]) && str[c])
+		c++;
+	if ((str[c] == '+' || str[c] == '-') && str[c])
+	{
+		if (str[c] == '-')
+			return (0);
+		c++;
+	}
 	while (str[c])
 	{
-		while (is_space(str[c]) && str[c])
-			c++;
-		if (str[c] == '+' && str[c])
-			c++;
-		else if (str[c] == '-' && str[c])
-			return (num);
-		if (!is_digit(str[c]) && str[c])
-			return (num);
-		num = &str[c];
+		if (!is_digit(str[c]))
+			return (0);
 		c++;
-		break;
 	}
-	return (num);
+	return (1);
 }
 
 int	ft_atol(char *str)
 {
 	int		c;
-	char	*num;
 	long	ret;
 
 	c = 0;
 	ret = 0;
-	num = valid_input(str);
-	if (!num)
+	if (!is_valid_input(str))
 		return (0);
+	while (is_space(str[c]))
+		c++;
 	while (is_digit(str[c]))
 	{
 		ret = ret * 10 + (str[c] - '0');
+		if (ret >= INT_MAX || ret <= INT_MIN)
+		{
+			printf("Number out of range!\n");
+			return (0);
+		}
 		c++;
-	}
-	if (ret >= INT_MAX)
-	{
-		printf("Number too large!\n");
-		return (0);
 	}
 	return (ret);
 }
-
-
 
 int	parse_input(t_table *table, char **av)
 {

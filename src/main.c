@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:33:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/01/24 23:01:54 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/04 19:28:41 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,21 @@ int main(int ac, char **av)
 			printf("Malloc error!\n");
 			return (1);	
 		}
-		if (!init_table(table, av))
+		if (!parse_input(table, av))
 		{
-			end_simulation(table);
+			printf("Invalid input!\n");
+			return (1);
+		}
+		if (!init_table(table))
+		{
+			printf("Finished here! xxx\n");
+			end_simulation(table);			//TODO: handle
 			return (1);
 		}
 		if (!init_threads(table))
 		{
-			end_simulation(table);
+			printf("Finished here! yyy\n");
+			end_simulation(table);			//TODO: handle
 			return (1);
 		}
 	}
@@ -42,6 +49,6 @@ int main(int ac, char **av)
 		printf("Invalid number of arguments!\n");
 		return (1);
 	}
-	printf("Main function finished ...\n");
+	end_simulation(table);
 	return (0);
 }
