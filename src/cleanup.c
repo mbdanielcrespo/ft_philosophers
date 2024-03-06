@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:11:57 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/05 10:54:14 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:17:35 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ void	join_threads(t_table *table)
 	int c;
 
 	c = 0;
-	if (pthread_join(table->monitor_thread, NULL) < 0)
-		printf("Thread join error\n");
 	while (c < table->num_of_philos)
 	{
 		if (pthread_join(table->philos[c].philo, NULL) < 0)

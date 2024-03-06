@@ -64,7 +64,7 @@ int		is_space(char ch);
 void    mutex_handle(t_mtx *mutex, t_opcode opcode);
 
 // Parse
-int		valid_input(char *str);
+int		is_valid_input(char *str);
 int		ft_atol(char *str);
 int		parse_input(t_table *table, char **av);
 
@@ -102,5 +102,6 @@ void    end_simulation(t_table *table);
 // Monitor
 int		has_died(t_philo *philo);
 int		has_someone_died(t_philo *philo);
-void	*monitor_routine(void *arg);
+void  	monitor(t_table *table);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 11:33:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/04 19:28:41 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:31:51 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,14 @@ int main(int ac, char **av)
 			return (1);	
 		}
 		if (!parse_input(table, av))
-		{
-			printf("Invalid input!\n");
 			return (1);
-		}
 		if (!init_table(table))
 		{
-			printf("Finished here! xxx\n");
 			end_simulation(table);			//TODO: handle
 			return (1);
 		}
 		if (!init_threads(table))
 		{
-			printf("Finished here! yyy\n");
 			end_simulation(table);			//TODO: handle
 			return (1);
 		}

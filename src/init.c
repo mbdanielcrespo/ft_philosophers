@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/04 18:43:30 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/06 16:15:47 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,11 +64,6 @@ int	init_threads(t_table *table)
 	int	c;
 	
 	c = 0;
-	if (pthread_create(&table->monitor_thread, NULL, monitor_routine, (void *)&table) != 0)
-	{
-		printf("Error creating monitor thread!\n");
-	    return (0);
-	}
 	while (c < table->num_of_philos)
 	{
 		if (pthread_create(&table->philos[c].philo, NULL, philosopher_routine, (void *)&table->philos[c]) != 0)
