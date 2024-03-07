@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/06 16:15:47 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/07 11:56:37 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int    init_table(t_table *table)
 	return (1);
 }
 
-// In case mutex fails error
 void	init_forks(t_table *table)
 {
 	int	c;
@@ -51,6 +50,7 @@ void	init_philos(t_table *table)
 	{
 		table->philos[c].id = c + 1;
 		table->philos[c].last_meal = current_time_ms();
+		table->philos[c].n_meals = 0;
 		table->philos[c].is_dead = 0;
 		table->philos[c].left_fork = &table->forks[c];
 		table->philos[c].right_fork = &table->forks[(c + 1) % table->num_of_philos];

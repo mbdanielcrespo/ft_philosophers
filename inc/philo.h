@@ -22,13 +22,14 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	int		id;
+	int			id;
 	long long	last_meal;
-	int		is_dead;
-	t_fork	*left_fork;
-	t_fork	*right_fork;
+	int			n_meals;
+	int			is_dead;
+	t_fork		*left_fork;
+	t_fork		*right_fork;
 	pthread_t	philo;
-	t_table	*table;
+	t_table		*table;
 }	t_philo;
 
 typedef	struct s_table
@@ -102,6 +103,6 @@ void    end_simulation(t_table *table);
 // Monitor
 int		has_died(t_philo *philo);
 int		has_someone_died(t_philo *philo);
-void  	monitor(t_table *table);
+int		is_someone_full(t_philo *philo);
 
 #endif
