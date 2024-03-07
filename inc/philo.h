@@ -62,6 +62,7 @@ typedef enum e_opcode
 // Utils
 int		is_digit(char ch);
 int		is_space(char ch);
+void	increase_meal_counter(t_philo *philo);
 void    mutex_handle(t_mtx *mutex, t_opcode opcode);
 
 // Parse
@@ -101,7 +102,8 @@ void    destroy_structures(t_table *table);
 void    end_simulation(t_table *table);
 
 // Monitor
-int		has_died(t_philo *philo);
+int		check_end(t_philo *philo);
+int		has_ended(t_philo *philo);
 int		has_someone_died(t_philo *philo);
 int		is_someone_full(t_philo *philo);
 
