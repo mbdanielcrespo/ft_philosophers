@@ -64,6 +64,7 @@ int		is_digit(char ch);
 int		is_space(char ch);
 void	increase_meal_counter(t_philo *philo);
 void    mutex_handle(t_mtx *mutex, t_opcode opcode);
+int		write_text(char *text, t_philo *philo);
 
 // Parse
 int		is_valid_input(char *str);
@@ -104,7 +105,8 @@ void    end_simulation(t_table *table);
 // Monitor
 int		check_end(t_philo *philo);
 int		has_ended(t_philo *philo);
-int		has_someone_died(t_philo *philo);
+int		has_philo_died(t_philo *philo);
 int		is_someone_full(t_philo *philo);
+void	monitor(t_table *table);
 
 #endif

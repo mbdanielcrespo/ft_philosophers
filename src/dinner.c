@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:17:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/07 14:59:16 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/08 00:34:38 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,25 @@
 int	even_philo_eat(t_philo *philo)
 {
 	mutex_handle(&philo->right_fork->mtx, LOCK);
-	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	if (write_text("has taken a fork", philo))
+	{
+		mutex_handle(&philo->right_fork->mtx, UNLOCK);
+		return (0);
+	}
 	mutex_handle(&philo->left_fork->mtx, LOCK);
-	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	printf("%lld %d is eating meal n: %d\n", elapsed_time_ms(philo->table->dinner_start), philo->id, philo->n_meals);
-	increase_meal_counter(philo);
+	if (write_text("has taken a fork", philo))
+	{
+		mutex_handle(&philo->right_fork->mtx, UNLOCK);
+		mutex_handle(&philo->left_fork->mtx, UNLOCK);
+		return (0);
+	}
+	if (write_text("is eating", philo))
+	{
+		mutex_handle(&philo->right_fork->mtx, UNLOCK);
+		mutex_handle(&philo->left_fork->mtx, UNLOCK);
+		return (0);
+	}
+	//increase_meal_counter(philo);
 	if (custom_wait(philo->table->time_to_eat, philo))
 	{
 		mutex_handle(&philo->right_fork->mtx, UNLOCK);
@@ -34,14 +48,26 @@ int	even_philo_eat(t_philo *philo)
 
 int	uneven_philo_eat(t_philo *philo)
 {
-	if (has_ended(philo))
-		return (0);
 	mutex_handle(&philo->left_fork->mtx, LOCK);
-	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	if (write_text("has taken a fork", philo))
+	{
+		mutex_handle(&philo->left_fork->mtx, UNLOCK);
+		return (0);
+	}
 	mutex_handle(&philo->right_fork->mtx, LOCK);
-	printf("%lld %d has taken a fork\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	printf("%lld %d is eating meal n: %d\n", elapsed_time_ms(philo->table->dinner_start), philo->id, philo->n_meals);
-	increase_meal_counter(philo);
+	if (write_text("has taken a fork", philo))
+	{
+		mutex_handle(&philo->left_fork->mtx, UNLOCK);
+		mutex_handle(&philo->right_fork->mtx, UNLOCK);
+		return (0);
+	}
+	if (write_text("is eating", philo))
+	{
+		mutex_handle(&philo->left_fork->mtx, UNLOCK);
+		mutex_handle(&philo->right_fork->mtx, UNLOCK);
+		return (0);
+	}
+	//increase_meal_counter(philo);
 	if (custom_wait(philo->table->time_to_eat, philo))
 	{
 		mutex_handle(&philo->left_fork->mtx, UNLOCK);
@@ -71,13 +97,17 @@ int	philo_eat(t_philo *philo)
 
 int	philo_think(t_philo *philo)
 {
-	printf("%lld %d is thinking\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	//printf("%lld %d is thinking\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	if (write_text("is thinking", philo))
+		return (0);
 	return (1);
 }
 
 int	philo_sleep(t_philo *philo)
 {
-	printf("%lld %d is sleeping\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	//printf("%lld %d is sleeping\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	if (write_text("is sleeping", philo))
+		return (0);
 	if (custom_wait(philo->table->time_to_sleep, philo))
 		return (0);
 	return (1);
