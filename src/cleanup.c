@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:11:57 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/06 16:17:35 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:04:22 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void    destroy_mutexes(t_table *table)
 
 	c = 0;
 	mutex_handle(&table->mtx, DESTROY);
+	mutex_handle(&table->log, DESTROY);
 	while (c < table->num_of_philos)
 	{
 		mutex_handle(&table->forks[c].mtx, DESTROY);

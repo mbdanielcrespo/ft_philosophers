@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/07 11:56:37 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/08 18:03:50 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int    init_table(t_table *table)
 	table->end = 0;
 	table->dinner_start = current_time_ms();
 	mutex_handle(&table->mtx, INIT);
+	mutex_handle(&table->log, INIT);
 	table->philos = (t_philo *)malloc(sizeof(t_philo) * table->num_of_philos);
 	if (!table->philos)
 		return (0);

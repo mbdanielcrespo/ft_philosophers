@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 23:33:29 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/08 00:25:25 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:31:56 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,24 @@ int	write_text(char *text, t_philo *philo)
 
 int	has_philo_died(t_philo *philo)
 {	
+	//int	current;
+
+	//current = elapsed_time_ms(philo->table->dinner_start);
 	if (elapsed_time_ms(philo->last_meal) >= philo->table->time_to_die)
 	{
-		write_text("is DEAD", philo);
 		mutex_handle(&philo->table->mtx, LOCK);
-		philo->table->end = 1;
-		mutex_handle(&philo->table->mtx, UNLOCK);
-		return (1);
+		if (philo->table->end)
+		{
+			mutex_handle(&philo->table->mtx, UNLOCK);
+			return (1);
+		}
+		else
+		{
+			philo->table->end = 1;
+			printf("%lld %d %s\n", elapsed_time_ms(philo->table->dinner_start), philo->id, "is DEAD");
+			mutex_handle(&philo->table->mtx, UNLOCK);
+			return (1);
+		}
 	}
 	return (0);
 }

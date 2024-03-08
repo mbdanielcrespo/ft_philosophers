@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 12:04:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/08 00:13:04 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:14:49 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	custom_wait(int wait_ms, t_philo *philo)
 	{
 		if (has_philo_died(philo))
 			return (1);
-		usleep(50);
 	}
 	return (0);
 }

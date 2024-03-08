@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:17:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/08 00:34:38 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/08 19:37:28 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,26 @@ int	philo_eat(t_philo *philo)
 	return (1);
 }
 
+void	take_fork(t_fork *take_fork)
+{
+	
+}
+
+void	philo_eat(t_philo *philo)
+{
+	if ((philo->id % 2) == 1)
+	{
+		take_fork(philo->right_fork);
+		take_fork(philo->left_fork);
+	}
+	else
+	{
+		if (!uneven_philo_eat(philo))
+			return (0);
+	}
+	return (1);
+}
+
 int	philo_think(t_philo *philo)
 {
 	//printf("%lld %d is thinking\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
@@ -118,13 +138,15 @@ void	*philosopher_routine(void *arg)
 	t_philo *philo;
 	
 	philo = (t_philo *)arg;
-	if ((philo->id % 2) == 0)
-		custom_wait(1, philo);
+	philo->last_meal = current_time_ms();
+	if ((philo->id % 2) == 0 && philo->id != 1)
+		usleep(50);
 	while (1)
 	{
+		//if (is_philo_dead(philo))
+		//	break;
+		philo_eat(philo);		
 		if (!philo_think(philo))
-			break;
-		if (!philo_eat(philo))
 			break;
 		if (!philo_sleep(philo))
 			break;

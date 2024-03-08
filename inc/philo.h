@@ -45,6 +45,7 @@ typedef	struct s_table
 	t_philo	*philos;
 	t_fork	*forks;
 	t_mtx	mtx;
+	t_mtx	log;
 }	t_table;
 
 
