@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 12:04:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/08 19:14:49 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:34:45 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ long long	elapsed_time_ms(long long start_time)
 	return (end_time - start_time);
 }
 
-void	custom_wait(int wait_ms, t_philo *philo, int flag)
+int	custom_wait(int wait_ms, t_philo *philo, int flag)
 {
 	long long start_time;
 
@@ -39,14 +39,15 @@ void	custom_wait(int wait_ms, t_philo *philo, int flag)
 		{
 			if (flag == 1)
 			{
-				drop_forks(philo);	
-				return ;
+				drop_forks(philo);
+				return (1);
 			}
-			else if (flag == 2)
-				return ;
+			if (flag == 2)
+				return (1);
 		}
-		usleep(1);
+		usleep(50);
 	}
+	return (0);
 }
 
 int	has_philo_died(t_philo *philo)
@@ -60,7 +61,7 @@ int	has_philo_died(t_philo *philo)
 	if (elapsed_time_ms(philo->last_meal) >= philo->table->time_to_die)
 	{
 		philo->table->end = 1;
-		printf("%lld %d %s\n", elapsed_time_ms(philo->table->dinner_start), philo->id, "is DEAD");
+		write_text("died", philo);
 		mutex_handle(&philo->table->mtx, UNLOCK);
 		return (1);
 	}

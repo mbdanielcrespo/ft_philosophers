@@ -1,19 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/09 16:52:16 by danalmei          #+#    #+#             */
+/*   Updated: 2024/03/09 16:52:16 by danalmei         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
-#define PHILO_H
+# define PHILO_H
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <limits.h>
-#include <errno.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <pthread.h>
+# include <sys/time.h>
+# include <limits.h>
+# include <errno.h>
 
-typedef pthread_mutex_t t_mtx;
-typedef struct s_table t_table;
-
-//number_of_philosophers die eat sleep
-// 5 200 200 200 [5]
+typedef pthread_mutex_t	t_mtx;
+typedef struct s_table	t_table;
 typedef struct s_fork
 {
 	int		id;
@@ -38,7 +47,7 @@ typedef	struct s_table
 	int		time_to_die;
 	int		time_to_eat;
 	int		time_to_sleep;
-	int		max_meals;		//-1 uninitialized
+	int		max_meals;
 	int		end;
 	long long	dinner_start;
 	pthread_t	monitor_thread;
@@ -72,7 +81,7 @@ void	init_forks(t_table *table);
 int		init_threads(t_table *table);
 
 // Dinner
-void	philo_eat(t_philo *philo);
+int		philo_eat(t_philo *philo);
 void	philo_think(t_philo *philo);
 void	philo_sleep(t_philo *philo);
 void	*philosopher_routine(void *arg);
@@ -91,7 +100,7 @@ void    end_simulation(t_table *table);
 // Time
 long long	current_time_ms(void);
 long long	elapsed_time_ms(long long start_time);
-void		custom_wait(int wait_ms, t_philo *philo, int action);
+int			custom_wait(int wait_ms, t_philo *philo, int action);
 int			has_philo_died(t_philo *philo);
 
 // Utils

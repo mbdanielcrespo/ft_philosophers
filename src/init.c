@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:16:49 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/08 18:03:50 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:37:39 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	init_philos(t_table *table)
 	while (c < table->num_of_philos)
 	{
 		table->philos[c].id = c + 1;
-		table->philos[c].last_meal = current_time_ms();
+		table->philos[c].last_meal = table->dinner_start;
 		table->philos[c].n_meals = 0;
 		table->philos[c].is_dead = 0;
 		table->philos[c].left_fork = &table->forks[c];

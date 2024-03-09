@@ -13,8 +13,7 @@ SRC_FILES = main.c \
 			forks.c \
 			cleanup.c \
 			time.c \
-			utils.c \
-			debug.c
+			utils.c
 
 SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
