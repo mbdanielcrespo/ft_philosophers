@@ -1,21 +1,41 @@
+NAME = philo
 CC = cc
 CFLAGS = -Wall -Werror -Wextra -g #-fsanitize=thread
-NAME = philo
-INC_FLAGS = -I ./inc/
+SRC_DIR = src
+INC_DIR = inc
+OBJ_DIR = build
+INC_FLAGS = -I $(INC_DIR)
 
-SRC = 	src/main.c src/dinner.c src/init.c src/parse.c \
-		src/debug.c src/utils.c src/time.c src/cleanup.c src/monitor.c
+SRC_FILES = main.c \
+			parse.c \
+			init.c \
+			dinner.c \
+			forks.c \
+			cleanup.c \
+			time.c \
+			utils.c \
+			debug.c
 
-$(NAME) : $(SRC)
-	$(CC) $(CFLAGS) $(INC_FLAGS) $(SRC) -o $(NAME)
+SRCS = $(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+
+$(NAME) : $(OBJS)
+	@echo "Compiling $@"
+	@$(CC) $(CFLAGS) -o $@ $^ $(INC_FLAGS)
+	@echo "Done!"
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(@D)
+	@echo "Compiling $<"
+	@$(CC) $(CFLAGS) $(INC_FLAGS) -c $< -o $@
 
 all: $(NAME)
 
 clean:
-	@$(RM) $(OBJ)
+	@rm -rf $(OBJ_DIR)
 
-fclean:
-	@$(RM) $(NAME)
+fclean: clean
+	@rm -f $(NAME)
 
 re: fclean all
 

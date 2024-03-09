@@ -32,6 +32,14 @@ void	increase_meal_counter(t_philo *philo)
 		philo->n_meals += 1;
 }
 
+
+void	write_text(char *text, t_philo *philo)
+{
+	mutex_handle(&philo->table->log, LOCK);
+	printf("%lld %d %s\n", elapsed_time_ms(philo->table->dinner_start), philo->id, text);
+	mutex_handle(&philo->table->log, UNLOCK);
+}
+
 void	mutex_handle(t_mtx *mutex, t_opcode opcode)
 {
 	if (LOCK == opcode)

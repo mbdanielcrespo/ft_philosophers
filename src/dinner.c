@@ -12,126 +12,42 @@
 
 #include <philo.h>
 
-int	even_philo_eat(t_philo *philo)
-{
-	mutex_handle(&philo->right_fork->mtx, LOCK);
-	if (write_text("has taken a fork", philo))
-	{
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		return (0);
-	}
-	mutex_handle(&philo->left_fork->mtx, LOCK);
-	if (write_text("has taken a fork", philo))
-	{
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		return (0);
-	}
-	if (write_text("is eating", philo))
-	{
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		return (0);
-	}
-	//increase_meal_counter(philo);
-	if (custom_wait(philo->table->time_to_eat, philo))
-	{
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		return (0);
-	}
-	philo->last_meal = current_time_ms();
-	mutex_handle(&philo->right_fork->mtx, UNLOCK);
-	mutex_handle(&philo->left_fork->mtx, UNLOCK);
-	return (1);
-}
-
-int	uneven_philo_eat(t_philo *philo)
-{
-	mutex_handle(&philo->left_fork->mtx, LOCK);
-	if (write_text("has taken a fork", philo))
-	{
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		return (0);
-	}
-	mutex_handle(&philo->right_fork->mtx, LOCK);
-	if (write_text("has taken a fork", philo))
-	{
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		return (0);
-	}
-	if (write_text("is eating", philo))
-	{
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		return (0);
-	}
-	//increase_meal_counter(philo);
-	if (custom_wait(philo->table->time_to_eat, philo))
-	{
-		mutex_handle(&philo->left_fork->mtx, UNLOCK);
-		mutex_handle(&philo->right_fork->mtx, UNLOCK);
-		return (0);
-	}
-	philo->last_meal = current_time_ms();
-	mutex_handle(&philo->left_fork->mtx, UNLOCK);
-	mutex_handle(&philo->right_fork->mtx, UNLOCK);
-	return (1);
-}
-
-int	philo_eat(t_philo *philo)
-{
-	if ((philo->id % 2) == 1)
-	{
-		if (!even_philo_eat(philo))
-			return (0);
-	}
-	else
-	{
-		if (!uneven_philo_eat(philo))
-			return (0);
-	}
-	return (1);
-}
-
-void	take_fork(t_fork *take_fork)
-{
-	
-}
-
 void	philo_eat(t_philo *philo)
 {
-	if ((philo->id % 2) == 1)
+	take_forks(philo);
+	if (has_philo_died(philo))
 	{
-		take_fork(philo->right_fork);
-		take_fork(philo->left_fork);
+		drop_forks(philo);
+		return ;
 	}
-	else
+	printf("%lld %d %s\n", elapsed_time_ms(philo->table->dinner_start), philo->id, "is eating");
+	custom_wait(philo->table->time_to_eat, philo, 1);
+	increase_meal_counter(philo);
+	if (philo->n_meals == philo->table->max_meals)
 	{
-		if (!uneven_philo_eat(philo))
-			return (0);
+		mutex_handle(&philo->table->mtx, LOCK);
+		philo->table->end = 1;
+		mutex_handle(&philo->table->mtx, UNLOCK);
 	}
-	return (1);
+	philo->last_meal = current_time_ms();
+	drop_forks(philo);
 }
 
-int	philo_think(t_philo *philo)
+void	philo_think(t_philo *philo)
 {
-	//printf("%lld %d is thinking\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	if (write_text("is thinking", philo))
-		return (0);
-	return (1);
+	if (has_philo_died(philo))
+		return ;
+	printf("%lld %d is thinking\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
 }
 
-int	philo_sleep(t_philo *philo)
+void	philo_sleep(t_philo *philo)
 {
-	//printf("%lld %d is sleeping\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
-	if (write_text("is sleeping", philo))
-		return (0);
-	if (custom_wait(philo->table->time_to_sleep, philo))
-		return (0);
-	return (1);
+	if (has_philo_died(philo))
+		return ;
+	printf("%lld %d is sleeping\n", elapsed_time_ms(philo->table->dinner_start), philo->id);
+	custom_wait(philo->table->time_to_sleep, philo, 2);
 }
+
 
 void	*philosopher_routine(void *arg)
 {
@@ -143,12 +59,12 @@ void	*philosopher_routine(void *arg)
 		usleep(50);
 	while (1)
 	{
-		//if (is_philo_dead(philo))
-		//	break;
-		philo_eat(philo);		
-		if (!philo_think(philo))
+		if (has_philo_died(philo))
 			break;
-		if (!philo_sleep(philo))
+		philo_eat(philo);
+		philo_sleep(philo);
+		philo_think(philo);
+		if (has_philo_died(philo))
 			break;
 	}
 	return (NULL);

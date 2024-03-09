@@ -60,31 +60,10 @@ typedef enum e_opcode
 	DETEACH = 6,
 }		t_opcode;
 
-// Utils
-int		is_digit(char ch);
-int		is_space(char ch);
-void	increase_meal_counter(t_philo *philo);
-void    mutex_handle(t_mtx *mutex, t_opcode opcode);
-int		write_text(char *text, t_philo *philo);
-
 // Parse
 int		is_valid_input(char *str);
 int		ft_atol(char *str);
 int		parse_input(t_table *table, char **av);
-
-// Debug
-void    print_all(t_table *table);
-void    print_table(t_table *table);
-void    print_philo(t_philo *philo);
-void    print_fork(t_fork *fork);
-
-// Dinner
-int		even_philo_eat(t_philo *philo);
-int		uneven_philo_eat(t_philo *philo);
-int		philo_eat(t_philo *philo);
-int		philo_think(t_philo *philo);
-int		philo_sleep(t_philo *philo);
-void	*philosopher_routine(void *arg);
 
 // Init
 int		init_table(t_table *table);
@@ -92,10 +71,16 @@ void	init_philos(t_table *table);
 void	init_forks(t_table *table);
 int		init_threads(t_table *table);
 
-// Time
-long long	current_time_ms(void);
-long long	elapsed_time_ms(long long start_time);
-int			custom_wait(int wait_ms, t_philo *philo);
+// Dinner
+void	philo_eat(t_philo *philo);
+void	philo_think(t_philo *philo);
+void	philo_sleep(t_philo *philo);
+void	*philosopher_routine(void *arg);
+
+// Forks
+void	take_fork(t_philo *philo, t_fork *taken_fork);
+void	take_forks(t_philo *philo);
+void	drop_forks(t_philo *philo);
 
 // Cleanup
 void    join_threads(t_table *table);
@@ -103,11 +88,23 @@ void    destroy_mutexes(t_table *table);
 void    destroy_structures(t_table *table);
 void    end_simulation(t_table *table);
 
-// Monitor
-int		check_end(t_philo *philo);
-int		has_ended(t_philo *philo);
-int		has_philo_died(t_philo *philo);
-int		is_someone_full(t_philo *philo);
-void	monitor(t_table *table);
+// Time
+long long	current_time_ms(void);
+long long	elapsed_time_ms(long long start_time);
+void		custom_wait(int wait_ms, t_philo *philo, int action);
+int			has_philo_died(t_philo *philo);
+
+// Utils
+int		is_digit(char ch);
+int		is_space(char ch);
+void	increase_meal_counter(t_philo *philo);
+void	write_text(char *text, t_philo *philo);
+void    mutex_handle(t_mtx *mutex, t_opcode opcode);
+
+// Debug
+void    print_all(t_table *table);
+void    print_table(t_table *table);
+void    print_philo(t_philo *philo);
+void    print_fork(t_fork *fork);
 
 #endif

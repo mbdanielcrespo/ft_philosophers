@@ -28,7 +28,7 @@ long long	elapsed_time_ms(long long start_time)
 	return (end_time - start_time);
 }
 
-int	custom_wait(int wait_ms, t_philo *philo)
+void	custom_wait(int wait_ms, t_philo *philo, int flag)
 {
 	long long start_time;
 
@@ -36,7 +36,34 @@ int	custom_wait(int wait_ms, t_philo *philo)
 	while (elapsed_time_ms(start_time) < wait_ms)
 	{
 		if (has_philo_died(philo))
-			return (1);
+		{
+			if (flag == 1)
+			{
+				drop_forks(philo);	
+				return ;
+			}
+			else if (flag == 2)
+				return ;
+		}
+		usleep(1);
 	}
+}
+
+int	has_philo_died(t_philo *philo)
+{	
+	mutex_handle(&philo->table->mtx, LOCK);
+	if (philo->table->end)
+	{
+		mutex_handle(&philo->table->mtx, UNLOCK);
+		return (1);
+	}
+	if (elapsed_time_ms(philo->last_meal) >= philo->table->time_to_die)
+	{
+		philo->table->end = 1;
+		printf("%lld %d %s\n", elapsed_time_ms(philo->table->dinner_start), philo->id, "is DEAD");
+		mutex_handle(&philo->table->mtx, UNLOCK);
+		return (1);
+	}
+	mutex_handle(&philo->table->mtx, UNLOCK);
 	return (0);
 }
