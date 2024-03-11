@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 15:17:31 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/09 17:39:46 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:17:41 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,10 @@ void	philo_sleep(t_philo *philo)
 	custom_wait(philo->table->time_to_sleep, philo, 2);
 }
 
-
 void	*philosopher_routine(void *arg)
 {
-	t_philo *philo;
-	
+	t_philo	*philo;
+
 	philo = (t_philo *)arg;
 	philo->last_meal = current_time_ms();
 	if ((philo->id % 2) == 0 && philo->id != 1)
@@ -63,11 +62,21 @@ void	*philosopher_routine(void *arg)
 	{
 		philo_think(philo);
 		if (!philo_eat(philo))
-			break;
+			break ;
 		philo_sleep(philo);
-		//usleep(abs(philo->table->time_to_eat - philo->table->time_to_sleep) * 1000);
 		if (has_philo_died(philo))
-			break;
+			break ;
 	}
+	return (NULL);
+}
+
+void	*one_philo(void *arg)
+{
+	t_philo	*philo;
+
+	philo = (t_philo *)arg;
+	write_text("has taken a fork", philo);
+	usleep(philo->table->time_to_die * 1000);
+	write_text("died", philo);
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/16 15:11:57 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/08 18:04:22 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:56:23 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 void	join_threads(t_table *table)
 {
-	int c;
+	int	c;
 
 	c = 0;
-	while (c < table->num_of_philos)
+	while (c < table->n_philos)
 	{
 		if (pthread_join(table->philos[c].philo, NULL) < 0)
 			printf("Thread join error\n");
@@ -25,14 +25,14 @@ void	join_threads(t_table *table)
 	}
 }
 
-void    destroy_mutexes(t_table *table)
+void	destroy_mutexes(t_table *table)
 {
-	int c;
+	int	c;
 
 	c = 0;
 	mutex_handle(&table->mtx, DESTROY);
 	mutex_handle(&table->log, DESTROY);
-	while (c < table->num_of_philos)
+	while (c < table->n_philos)
 	{
 		mutex_handle(&table->forks[c].mtx, DESTROY);
 		c++;

@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 23:33:29 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/09 16:45:01 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/11 12:01:13 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	take_forks(t_philo *philo)
 
 void	drop_forks(t_philo *philo)
 {
-	//write_text("philo dropped forks", philo);
 	if ((philo->id % 2) == 1)
 	{
 		mutex_handle(&philo->left_fork->mtx, UNLOCK);

@@ -6,7 +6,7 @@
 /*   By: danalmei <danalmei@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/15 12:32:17 by danalmei          #+#    #+#             */
-/*   Updated: 2024/03/04 17:07:52 by danalmei         ###   ########.fr       */
+/*   Updated: 2024/03/11 11:57:59 by danalmei         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	is_valid_input(char *str)
 {
-	int c;
+	int	c;
 
 	c = 0;
 	while (is_space(str[c]) && str[c])
@@ -60,9 +60,10 @@ int	ft_atol(char *str)
 
 int	parse_input(t_table *table, char **av)
 {
-	if (!ft_atol(av[1]) || !ft_atol(av[2]) || !ft_atol(av[3]) || !ft_atol(av[4]))
+	if (!ft_atol(av[1]) || !ft_atol(av[2]) || 
+		!ft_atol(av[3]) || !ft_atol(av[4]))
 		return (0);
-	table->num_of_philos = ft_atol(av[1]);
+	table->n_philos = ft_atol(av[1]);
 	table->time_to_die = ft_atol(av[2]);
 	table->time_to_eat = ft_atol(av[3]);
 	table->time_to_sleep = ft_atol(av[4]);
